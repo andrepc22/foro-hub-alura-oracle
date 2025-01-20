@@ -41,6 +41,14 @@ public class TopicoController {
         }));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity mostrarTopico(@PathVariable Long id) {
+        return ResponseEntity.ok(repository.findById(id).map(topico -> {
+            String nombreUsuario = service.validarNombreUsuario(topico.getUsuario_id());
+            return new DatosListadoTopico(topico, nombreUsuario);
+        }));
+    }
+
     @PutMapping
     @Transactional
     public ResponseEntity actualizarTopico(@RequestBody @Valid DatosActualizarTopico datos) {
